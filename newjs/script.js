@@ -17,6 +17,7 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
         scope: {
             command: '=',
             columns: '=',
+            filters: '=',
             responsename: '@',
             responseobject: '@',
             title: '@'
@@ -41,9 +42,14 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
                 };
             }
 
+            $scope.filterObj = {};
+            if($scope.filters) {
+                $scope.filterValues = $scope.filters();
+            }
+
             $scope.getdata = function() {
                 var command = $scope.command();
-                command = angular.extend({}, command, {
+                command = angular.extend({}, command, $scope.filterObj, {
                     page: $scope.query.page,
                     pagesize: $scope.query.limit,
                     keyword: $scope.query.filter && $scope.query.filter.length ? $scope.query.filter : ''
@@ -63,6 +69,7 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
                 return $scope.getdata();
             };
             $scope.keywordDirty = false;
+
             $scope.$watch('query.filter', function() {
                 $scope.query.page = 1;
                 if($scope.query.filter && $scope.query.filter.length > 1) {
@@ -73,12 +80,22 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
                 }
             });
 
+            $scope.onFilterChange = function() {
+                $scope.query.page = 1;
+                $scope.deferred = $scope.getdata();
+            };
+
+            $scope.clearFilter = function(field) {
+                $scope.filterObj[field] = undefined;
+                $scope.onFilterChange();
+            };
+
             $scope.apiService = ApiService;
 
         },
         link: function(scope, element, attrs) {
             scope.apiService.login("/client/api", "admin", "password", null, function(data) {
-                scope.getdata();
+                scope.deferred = scope.getdata();
             });
 
         },
@@ -96,9 +113,6 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
 
     $scope.getColumns = function() {
         return [{
-            field: 'category',
-            displayName: 'Category'
-        }, {
             field: 'name',
             displayName: 'Name'
         }, {
@@ -107,6 +121,16 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
         }, {
             field: 'description',
             displayName: 'Description'
+        }];
+    };
+
+    $scope.getFilters = function() {
+        return [{
+            field: 'category',
+            displayName: 'Category',
+            values: function() {
+                return ['Account Defaults', 'Advanced', 'Alert', 'Console Proxy', 'Developer', 'Domain Defaults', 'Hidden', 'management-server', 'Network', 'NetworkManager', 'Project Defaults', 'Secure', 'Snapshots', 'Storage', 'Usage'];
+            }
         }];
     };
 
@@ -231,6 +255,12 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
         data.sessionkey = authentication.currentUser.sessionkey;
         data._ = new Date().getTime();
         data.response = 'json';
+
+        for(var key in data) {
+            if(data[key] === '' || data[key] === undefined) {
+                delete data[key];
+            }
+        }
 
         var request = {};
 

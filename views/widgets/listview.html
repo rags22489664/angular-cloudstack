@@ -9,6 +9,25 @@
             <input ng-model="query.filter" type="text" placeholder="Keyword">
         </md-input-container>
 
+
+        <div layout="row" layout-align="center center" ng-repeat="filter in filterValues">
+            <div flex="80">
+                <md-input-container style="width: 70%;">
+                    <label>{{filter.displayName}}</label>
+                    <md-select ng-model="filterObj[filter.field]" ng-change="onFilterChange()">
+                        <md-option ng-repeat="val in filter.values()" value="{{val}}">
+                            {{val}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <div flex="20">
+                <md-button aria-label="clear" ng-click="clearFilter(filter.field)">clear</md-button>
+            </div>
+
+        </div>
+
+
         <md-data-table-container>
             <table md-data-table md-row-select="selected" md-progress="deferred">
                 <thead md-order="query.order" md-trigger="onOrderChange">
