@@ -32,7 +32,7 @@
         <meta name="viewport" content="initial-scale=1">
         <title></title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css">
-        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.4/angular-material.css">
+        <link rel="stylesheet" href="newcss/angular-material.css">
         <link rel="stylesheet" href="newcss/md-data-table.css">
         <link rel="stylesheet" href="newcss/style.css">
     </head>
@@ -48,11 +48,11 @@
             </md-content>
           </div>
 
-          <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.js"></script>
-          <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-animate.js"></script>
-          <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-aria.js"></script>
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"></script>
-          <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.4/angular-material.js"></script>
+          <script src="newjs/angular.js"></script>
+          <script src="newjs/angular-animate.js"></script>
+          <script src="newjs/angular-aria.js"></script>
+          <script src="newjs/angular-ui-router.js"></script>
+          <script src="newjs/angular-material.js"></script>
           <script src="newjs/md-data-table.js"></script>
           <script src="newjs/script.js"></script>
     </body>
