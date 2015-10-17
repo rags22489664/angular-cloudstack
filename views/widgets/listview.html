@@ -1,8 +1,13 @@
 <div>
-    <div ng-show="entities.total">
+    <div>
         <md-data-table-toolbar>
             <h2 class="md-title">{{title}}</h2>
         </md-data-table-toolbar>
+
+        <md-input-container md-no-float>
+            <md-icon><i class="fa fa-search"></i></md-icon>
+            <input ng-model="query.filter" type="text" placeholder="Keyword">
+        </md-input-container>
 
         <md-data-table-container>
             <table md-data-table md-row-select="selected" md-progress="deferred">
@@ -20,8 +25,5 @@
         </md-data-table-container>
 
         <md-data-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{entities.total}}" md-trigger="onPaginationChange"></md-data-table-pagination>
-    </div>
-    <div ng-hide="entities.total">
-        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
     </div>
 </div>

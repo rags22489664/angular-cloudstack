@@ -36,8 +36,8 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
 
             function success(response) {
                 $scope.entities = {
-                    data: response[$scope.responsename][$scope.responseobject],
-                    total: response[$scope.responsename].count
+                    data: response[$scope.responsename] && response[$scope.responsename][$scope.responseobject] ? response[$scope.responsename][$scope.responseobject] : [],
+                    total: response[$scope.responsename] && response[$scope.responsename].count ? response[$scope.responsename].count : 0
                 };
             }
 
@@ -45,13 +45,13 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
                 var command = $scope.command();
                 command = angular.extend({}, command, {
                     page: $scope.query.page,
-                    pagesize: $scope.query.limit
+                    pagesize: $scope.query.limit,
+                    keyword: $scope.query.filter && $scope.query.filter.length ? $scope.query.filter : ''
                 });
                 var deferred = ApiService.invoke({
                     data: command,
                     onSuccess: success
                 });
-                //$scope.deferred = deferred;
                 return deferred;
             }
 
@@ -62,6 +62,16 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
             $scope.onPaginationChange = function(page, limit) {
                 return $scope.getdata();
             };
+            $scope.keywordDirty = false;
+            $scope.$watch('query.filter', function() {
+                $scope.query.page = 1;
+                if($scope.query.filter && $scope.query.filter.length > 1) {
+                    $scope.keywordDirty = true;
+                }
+                if($scope.keywordDirty) {
+                  $scope.deferred = $scope.getdata();
+                }
+            });
 
             $scope.apiService = ApiService;
 
