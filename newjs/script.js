@@ -22,7 +22,7 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
             responseobject: '@',
             title: '@'
         },
-        controller: function($scope, ApiService) {
+        controller: function($scope, $q, ApiService) {
 
             $scope.pageSizes = [10, 20, 50, 100, 500];
 
@@ -48,11 +48,9 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
             $scope.filterValues = [];
             if ($scope.filters) {
                 var filterDeferred = $scope.filters();
-                for(var def in filterDeferred) {
-                    filterDeferred[def].then(function(resolvedFilter) {
-                        $scope.filterValues.push(resolvedFilter);
-                    }, function(error){
-                        console.log(error);
+                if(filterDeferred.length) {
+                    $q.all(filterDeferred).then(function(data){
+                         $scope.filterValues = data;
                     });
                 }
             }
@@ -99,7 +97,7 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
     }
 })
 
-.controller("ConfigurationCtrl", ['$scope', '$q', function($scope, $q) {
+.controller("ConfigurationCtrl", ['$scope', '$q', 'ApiService', function($scope, $q, ApiService) {
 
     $scope.getCommand = function() {
         return {
@@ -121,6 +119,8 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
     };
 
     $scope.getFilters = function() {
+
+        var filters = [];
 
         var categoryDeferred = $q.defer();
 
@@ -175,7 +175,41 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
             }]
         });
 
-        return [categoryDeferred.promise];
+        filters.push(categoryDeferred.promise);
+
+        var zoneDeferred = $q.defer();
+
+        ApiService.invoke({
+            data: {
+                command: 'listZones',
+                listall: true
+            },
+            onSuccess: function(response) {
+
+                var resFilter = {
+                    field: 'zoneid',
+                    displayName: 'Zone',
+                    values: []
+                };
+
+                if(response.listzonesresponse && response.listzonesresponse.zone && response.listzonesresponse.zone.length) {
+                    for(var index in response.listzonesresponse.zone) {
+                        resFilter.values.push({
+                            name: response.listzonesresponse.zone[index].name,
+                            value: response.listzonesresponse.zone[index].id
+                        });
+                    }
+
+                    if(resFilter.values.length) {
+                        zoneDeferred.resolve(resFilter);
+                    }
+                }
+            }
+        });
+
+        filters.push(zoneDeferred.promise);
+
+        return filters;
     };
 
     $scope.getCommand2 = function() {
