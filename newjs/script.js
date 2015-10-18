@@ -24,12 +24,14 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
         },
         controller: function($scope, ApiService) {
 
+            $scope.pageSizes = [10, 20, 50, 100, 500];
+
             $scope.selected = [];
 
             $scope.query = {
                 filter: '',
                 order: '',
-                limit: 5,
+                limit: 10,
                 page: 1
             };
 
@@ -43,8 +45,16 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
             }
 
             $scope.filterObj = {};
-            if($scope.filters) {
-                $scope.filterValues = $scope.filters();
+            $scope.filterValues = [];
+            if ($scope.filters) {
+                var filterDeferred = $scope.filters();
+                for(var def in filterDeferred) {
+                    filterDeferred[def].then(function(resolvedFilter) {
+                        $scope.filterValues.push(resolvedFilter);
+                    }, function(error){
+                        console.log(error);
+                    });
+                }
             }
 
             $scope.getdata = function() {
@@ -89,7 +99,7 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
     }
 })
 
-.controller("ConfigurationCtrl", ['$scope', function($scope) {
+.controller("ConfigurationCtrl", ['$scope', '$q', function($scope, $q) {
 
     $scope.getCommand = function() {
         return {
@@ -111,13 +121,61 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
     };
 
     $scope.getFilters = function() {
-        return [{
+
+        var categoryDeferred = $q.defer();
+
+        categoryDeferred.resolve({
             field: 'category',
             displayName: 'Category',
-            values: function() {
-                return ['Account Defaults', 'Advanced', 'Alert', 'Console Proxy', 'Developer', 'Domain Defaults', 'Hidden', 'management-server', 'Network', 'NetworkManager', 'Project Defaults', 'Secure', 'Snapshots', 'Storage', 'Usage'];
-            }
-        }];
+            values: [{
+                name: 'Account Defaults',
+                value: 'Account Defaults'
+            }, {
+                name: 'Advanced',
+                value: 'Advanced'
+            }, {
+                name: 'Alert',
+                value: 'Alert'
+            }, {
+                name: 'Console Proxy',
+                value: 'Console Proxy'
+            }, {
+                name: 'Developer',
+                value: 'Developer'
+            }, {
+                name: 'Domain Defaults',
+                value: 'Domain Defaults'
+            }, {
+                name: 'Hidden',
+                value: 'Hidden'
+            }, {
+                name: 'Management Server',
+                value: 'management-server'
+            }, {
+                name: 'Network',
+                value: 'Network'
+            }, {
+                name: 'NetworkManager',
+                value: 'NetworkManager'
+            }, {
+                name: 'Project Defaults',
+                value: 'Project Defaults'
+            }, {
+                name: 'Secure',
+                value: 'Secure'
+            }, {
+                name: 'Snapshots',
+                value: 'Snapshots'
+            }, {
+                name: 'Storage',
+                value: 'Storage'
+            },{
+                name: 'Usage',
+                value: 'Usage'
+            }]
+        });
+
+        return [categoryDeferred.promise];
     };
 
     $scope.getCommand2 = function() {
@@ -242,8 +300,8 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
         data._ = new Date().getTime();
         data.response = 'json';
 
-        for(var key in data) {
-            if(data[key] === '' || data[key] === undefined) {
+        for (var key in data) {
+            if (data[key] === '' || data[key] === undefined) {
                 delete data[key];
             }
         }
