@@ -22,7 +22,7 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
             responseobject: '@',
             title: '@'
         },
-        controller: function($scope, $q, ApiService) {
+        controller: function($scope, ApiService) {
 
             $scope.pageSizes = [10, 20, 50, 100, 500];
 
@@ -49,9 +49,11 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
             if ($scope.filters) {
                 var filterDeferred = $scope.filters();
                 if(filterDeferred.length) {
-                    $q.all(filterDeferred).then(function(data){
-                         $scope.filterValues = data;
-                    });
+                    for(var index in filterDeferred) {
+                        filterDeferred[index].then(function(data){
+                            $scope.filterValues.push(data);
+                        })
+                    }
                 }
             }
 
@@ -210,44 +212,6 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
         filters.push(zoneDeferred.promise);
 
         return filters;
-    };
-
-    $scope.getCommand2 = function() {
-        return {
-            command: 'listNetworkOfferings'
-        };
-    };
-
-    $scope.getColumns2 = function() {
-        return [{
-            field: 'id',
-            displayName: 'ID'
-        }, {
-            field: 'name',
-            displayName: 'Name'
-        }, {
-            field: 'displaytext',
-            displayName: 'Display Name'
-        }, {
-            field: 'traffictype',
-            displayName: 'Traffic Type'
-        }];
-    };
-
-    $scope.getCommand3 = function() {
-        return {
-            command: 'listOsTypes'
-        };
-    };
-
-    $scope.getColumns3 = function() {
-        return [{
-            field: 'id',
-            displayName: 'ID'
-        }, {
-            field: 'description',
-            displayName: 'Description'
-        }];
     };
 
 }])
