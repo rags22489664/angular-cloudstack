@@ -61,33 +61,19 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
                 return deferred;
             }
 
-            $scope.onOrderChange = function(order) {
-                return $scope.getdata();
-            };
-
-            $scope.onPaginationChange = function(page, limit) {
-                return $scope.getdata();
-            };
-            $scope.keywordDirty = false;
-
-            $scope.$watch('query.filter', function() {
-                $scope.query.page = 1;
-                if($scope.query.filter && $scope.query.filter.length > 1) {
-                    $scope.keywordDirty = true;
-                }
-                if($scope.keywordDirty) {
-                  $scope.deferred = $scope.getdata();
-                }
-            });
-
-            $scope.onFilterChange = function() {
+            $scope.onPredicateChange = function() {
                 $scope.query.page = 1;
                 $scope.deferred = $scope.getdata();
             };
 
             $scope.clearFilter = function(field) {
                 $scope.filterObj[field] = undefined;
-                $scope.onFilterChange();
+                $scope.onPredicateChange();
+            };
+
+            $scope.clearKeyword = function() {
+                $scope.query.filter = undefined;
+                $scope.onPredicateChange();
             };
 
             $scope.apiService = ApiService;

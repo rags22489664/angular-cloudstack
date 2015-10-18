@@ -1,36 +1,62 @@
-<div>
-    <div>
-        <md-data-table-toolbar>
+<md-content class="md-padding">
+    <md-card>
+        <md-card-content>
+
+        <md-data-table-toolbar style="padding: 0px;">
             <h2 class="md-title">{{title}}</h2>
         </md-data-table-toolbar>
 
-        <md-input-container md-no-float>
-            <md-icon><i class="fa fa-search"></i></md-icon>
-            <input ng-model="query.filter" type="text" placeholder="Keyword">
-        </md-input-container>
+        <form ng-submit="onPredicateChange()">
+            <div layout="row" layout-align="start center">
+                    <div style="width: 30%;">
+                        <md-input-container>
+                            <label>Keyword</label>
+                            <input ng-model="query.filter">
+                        </md-input-container>
+                    </div>
+                    <div>
+                        <md-button type="submit" class="md-fab md-mini md-primary" aria-label="Search">
+                            <md-tooltip>
+                                Search
+                            </md-tooltip>
+                            <i class="fa fa-search"></i>
+                        </md-button>
+                        <md-button type="submit" class="md-fab md-mini md-primary" aria-label="Clear" ng-click="clearKeyword()">
+                            <md-tooltip>
+                                Clear
+                            </md-tooltip>
+                            <i class="fa fa-times"></i>
+                        </md-button>
+                    </div>
+            </div>
+        </form>
 
 
-        <div layout="row" layout-align="center center" ng-repeat="filter in filterValues">
-            <div flex="80">
-                <md-input-container style="width: 70%;">
+        <div layout="row" layout-align="start center" ng-repeat="filter in filterValues">
+            <div style="width: 30%;">
+                <md-input-container>
                     <label>{{filter.displayName}}</label>
-                    <md-select ng-model="filterObj[filter.field]" ng-change="onFilterChange()">
+                    <md-select ng-model="filterObj[filter.field]" ng-change="onPredicateChange()">
                         <md-option ng-repeat="val in filter.values()" value="{{val}}">
                             {{val}}
                         </md-option>
                     </md-select>
                 </md-input-container>
             </div>
-            <div flex="20">
-                <md-button aria-label="clear" ng-click="clearFilter(filter.field)">clear</md-button>
+            <div>
+                <md-button type="submit" class="md-fab md-mini md-primary" aria-label="Clear" ng-click="clearFilter(filter.field)">
+                    <md-tooltip>
+                        Clear
+                    </md-tooltip>
+                    <i class="fa fa-times"></i>
+                </md-button>
             </div>
-
         </div>
 
 
         <md-data-table-container>
             <table md-data-table md-row-select="selected" md-progress="deferred">
-                <thead md-order="query.order" md-trigger="onOrderChange">
+                <thead md-order="query.order" md-trigger="getdata">
                 <tr>
                     <th name="{{column.displayName}}" ng-repeat="column in cols"></th>
                 </tr>
@@ -43,6 +69,7 @@
             </table>
         </md-data-table-container>
 
-        <md-data-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{entities.total}}" md-trigger="onPaginationChange"></md-data-table-pagination>
-    </div>
-</div>
+        <md-data-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{entities.total}}" md-trigger="getdata"></md-data-table-pagination>
+        </md-card-content>
+    </md-card>
+</md-content>
