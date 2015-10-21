@@ -1,0 +1,7 @@
+.selectable {
+    cursor: pointer;
+}
+.action {
+    cursor: pointer;
+    padding-left: 10px;
+}

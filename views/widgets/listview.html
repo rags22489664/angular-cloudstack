@@ -1,8 +1,16 @@
 <md-content class="md-padding">
-    <md-card>
+
+    <md-card ng-if="error">
+        <md-card-content>
+            <h2 class="md-title">Error</h2>
+            <p>{{error}}</p>
+        </md-card-content>
+    </md-card>
+
+    <md-card ng-if="!error">
         <md-card-content>
 
-            <md-card>
+            <!--<md-card>
                 <md-card-content>
                     <form ng-submit="onPredicateChange()">
                         <div layout="row" layout-align="start center">
@@ -29,10 +37,10 @@
                         </div>
                     </form>
                 </md-card-content>
-            </md-card>
+            </md-card>-->
 
 
-            <md-card>
+            <!--<md-card ng-if="filterValues && filterValues.length">
                 <md-card-content>
                     <div layout="row" layout-align="start center" ng-repeat="filter in filterValues">
                         <div flex>
@@ -55,31 +63,29 @@
                         </div>
                     </div>
                 </md-card-content>
-            </md-card>
+            </md-card>-->
 
-            <md-card>
-                <md-card-content>
-                    <md-data-table-toolbar >
+                    <md-data-table-toolbar>
                         <h2 class="md-title">{{title}}</h2>
+                        <i class="fa fa-search action"></i>
+                        <i class="fa fa-filter action"></i>
                     </md-data-table-toolbar>
 
                     <md-data-table-container>
-                        <table md-data-table md-row-select="selected" md-progress="deferred">
+                        <table md-data-table md-progress="deferred">
                             <thead md-order="query.order" md-trigger="getdata">
                             <tr>
-                                <th name="{{column.displayName}}" ng-repeat="column in cols"></th>
+                                <th name="{{column.displayName}}" ng-repeat="column in cols" ng-class="{'show' : !column.show, 'hide' : column.show, 'show-sm' : column.show && column.show.sm, 'show-gt-sm' : column.show && column.show.gtsm, 'show-md' : column.show && column.show.md, 'show-gt-md' : column.show && column.show.gtmd, 'show-lg' : column.show && column.show.lg, 'show-gt-lg' : column.show && column.show.gtlg}"></th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr md-auto-select ng-repeat="entity in entities.data">
-                                <td ng-repeat="column in cols">{{entity[column.field]}}</td>
+                            <tr md-auto-select ng-repeat="entity in entities.data" ng-click="onRowClick(entity, $index)" class="selectable">
+                                <td ng-repeat="column in cols" ng-class="{'show' : !column.show, 'hide' : column.show, 'show-sm' : column.show && column.show.sm, 'show-gt-sm' : column.show && column.show.gtsm, 'show-md' : column.show && column.show.md, 'show-gt-md' : column.show && column.show.gtmd, 'show-lg' : column.show && column.show.lg, 'show-gt-lg' : column.show && column.show.gtlg}">{{entity[column.field]}}</td>
                             </tr>
                             </tbody>
                         </table>
                     </md-data-table-container>
                     <md-data-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{entities.total}}" md-trigger="getdata" md-row-select="pageSizes"></md-data-table-pagination>
-                </md-card-content>
-            </md-card>
 
         </md-card-content>
     </md-card>

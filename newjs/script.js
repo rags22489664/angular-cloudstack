@@ -10,6 +10,23 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
     };
 }])
 
+.directive("detailview", function() {
+    return {
+        restrict: "E",
+        replace: true,
+        scope: {
+            title: '@'
+        },
+        controller: function($scope, $state, ApiService) {
+
+        },
+        link: function(scope, element, attrs) {
+
+        },
+        templateUrl: 'views/widgets/detailview.html'
+    }
+})
+
 .directive("listview", function() {
     return {
         restrict: "E",
@@ -22,11 +39,38 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
             responseobject: '@',
             title: '@'
         },
-        controller: function($scope, ApiService) {
+        controller: function($scope, $state, ApiService) {
+
+            if(!$scope.title) {
+                $scope.error = "Please pass the title attribute in the widget";
+                return;
+            }
+
+            if(!$scope.responsename) {
+                $scope.error = "Please pass the responsename attribute in the widget";
+                return;
+            }
+
+            if(!$scope.responseobject) {
+                $scope.error = "Please pass the responseobject attribute in the widget";
+                return;
+            }
+
+            if(!$scope.command) {
+                $scope.error = "Please pass the command attribute in the widget";
+                return;
+            }
+
+            if(!$scope.columns) {
+                $scope.error = "Please pass the columns attribute in the widget";
+                return;
+            }
 
             $scope.pageSizes = [10, 20, 50, 100, 500];
 
             $scope.selected = [];
+
+            $scope.showFilter = false;
 
             $scope.query = {
                 filter: '',
@@ -57,13 +101,18 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
                 }
             }
 
-            $scope.getdata = function() {
+            $scope.getRequest = function() {
                 var command = $scope.command();
                 command = angular.extend({}, command, $scope.filterObj, {
                     page: $scope.query.page,
                     pagesize: $scope.query.limit,
                     keyword: $scope.query.filter && $scope.query.filter.length ? $scope.query.filter : ''
                 });
+                return command;
+            }
+
+            $scope.getdata = function() {
+                var command = $scope.getRequest();
                 var deferred = ApiService.invoke({
                     data: command,
                     onSuccess: success
@@ -86,6 +135,10 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
                 $scope.onPredicateChange();
             };
 
+            $scope.onRowClick = function(entity, index) {
+                console.log(entity);
+            };
+
             $scope.apiService = ApiService;
 
         },
@@ -98,6 +151,76 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
         templateUrl: 'views/widgets/listview.html'
     }
 })
+
+.controller("virtualMachinesCtrl", ['$scope', '$q', 'ApiService', function($scope, $q, ApiService) {
+
+    $scope.getCommand = function() {
+        return {
+            command: 'listVirtualMachines'
+        };
+    };
+
+    $scope.getColumns = function() {
+        return [{
+            field: 'displayname',
+            displayName: 'Name'
+        }, {
+            field: 'state',
+            displayName: 'State'
+        }, {
+            field: 'account',
+            displayName: 'Account'
+        }];
+    };
+
+    $scope.getFilters = function() {
+
+        var filters = [];
+
+        var networkDeferred = $q.defer();
+
+        ApiService.login("/client/api", "admin", "password", null, function(data) {
+            ApiService.invoke({
+                data: {
+                    command: 'listNetworks',
+                    listall: true
+                },
+                onSuccess: function(response) {
+
+                    var resFilter = {
+                        field: 'networkid',
+                        displayName: 'Network',
+                        values: []
+                    };
+
+                    if(response.listnetworksresponse && response.listnetworksresponse.network && response.listnetworksresponse.network.length) {
+                        for(var index in response.listnetworksresponse.network) {
+                            resFilter.values.push({
+                                name: response.listnetworksresponse.network[index].displaytext,
+                                value: response.listnetworksresponse.network[index].id
+                            });
+                        }
+
+                        if(resFilter.values.length) {
+                            networkDeferred.resolve(resFilter);
+                        }
+                    }
+                }
+            });
+        });
+
+        filters.push(networkDeferred.promise);
+
+        return filters;
+    };
+
+}])
+
+.controller("virtualMachineDetailCtrl", ['$scope', '$stateParams', function($scope, $stateParams) {
+     if($stateParams.entity) {
+        $scope.title = $stateParams.entity.displayname;
+     }
+}])
 
 .controller("ConfigurationCtrl", ['$scope', '$q', 'ApiService', function($scope, $q, ApiService) {
 
@@ -113,10 +236,12 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
             displayName: 'Name'
         }, {
             field: 'value',
-            displayName: 'Value'
+            displayName: 'Value',
+            show: {md: true, gtmd: true, lg: true, gtlg: true}
         }, {
             field: 'description',
-            displayName: 'Description'
+            displayName: 'Description',
+            show: {lg: true, gtlg: true}
         }];
     };
 
@@ -181,32 +306,34 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
 
         var zoneDeferred = $q.defer();
 
-        ApiService.invoke({
-            data: {
-                command: 'listZones',
-                listall: true
-            },
-            onSuccess: function(response) {
+        ApiService.login("/client/api", "admin", "password", null, function(data) {
+            ApiService.invoke({
+                data: {
+                    command: 'listZones',
+                    listall: true
+                },
+                onSuccess: function(response) {
 
-                var resFilter = {
-                    field: 'zoneid',
-                    displayName: 'Zone',
-                    values: []
-                };
+                    var resFilter = {
+                        field: 'zoneid',
+                        displayName: 'Zone',
+                        values: []
+                    };
 
-                if(response.listzonesresponse && response.listzonesresponse.zone && response.listzonesresponse.zone.length) {
-                    for(var index in response.listzonesresponse.zone) {
-                        resFilter.values.push({
-                            name: response.listzonesresponse.zone[index].name,
-                            value: response.listzonesresponse.zone[index].id
-                        });
-                    }
+                    if(response.listzonesresponse && response.listzonesresponse.zone && response.listzonesresponse.zone.length) {
+                        for(var index in response.listzonesresponse.zone) {
+                            resFilter.values.push({
+                                name: response.listzonesresponse.zone[index].name,
+                                value: response.listzonesresponse.zone[index].id
+                            });
+                        }
 
-                    if(resFilter.values.length) {
-                        zoneDeferred.resolve(resFilter);
+                        if(resFilter.values.length) {
+                            zoneDeferred.resolve(resFilter);
+                        }
                     }
                 }
-            }
+            });
         });
 
         filters.push(zoneDeferred.promise);
@@ -224,6 +351,19 @@ cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
             url: '/home',
             templateUrl: 'views/home.html'
         })
+        .state('virtualMachines', {
+            url: '/virtualMachines',
+            templateUrl: 'views/virtualMachines.html'
+        })
+        .state('virtualMachinesDetail', {
+            url: '/virtualMachines/:virtualMachineId',
+            params: {entity: null},
+            templateUrl: 'views/virtualMachineDetail.html'
+        })
+        .state('configurations', {
+            url: '/configurations',
+            templateUrl: 'views/configurations.html'
+        });
 })
 
 .service('HttpService', function($http) {
