@@ -9,83 +9,64 @@
 
     <md-card ng-if="!error">
         <md-card-content>
+            <div layout="row" layout-align="start center" layout-wrap>
 
-            <!--<md-card>
-                <md-card-content>
-                    <form ng-submit="onPredicateChange()">
-                        <div layout="row" layout-align="start center">
-                            <div flex>
-                                <md-input-container>
-                                    <label>Keyword</label>
-                                    <input ng-model="query.filter">
-                                </md-input-container>
-                            </div>
-                            <div>
-                                <md-button type="submit" class="md-fab md-mini md-primary" aria-label="Search">
-                                    <md-tooltip>
-                                        Search
-                                    </md-tooltip>
-                                    <i class="fa fa-search"></i>
-                                </md-button>
-                                <md-button type="submit" class="md-fab md-mini md-primary" aria-label="Clear" ng-click="clearKeyword()">
-                                    <md-tooltip>
-                                        Clear
-                                    </md-tooltip>
-                                    <i class="fa fa-times"></i>
-                                </md-button>
-                            </div>
-                        </div>
-                    </form>
-                </md-card-content>
-            </md-card>-->
-
-
-            <!--<md-card ng-if="filterValues && filterValues.length">
-                <md-card-content>
-                    <div layout="row" layout-align="start center" ng-repeat="filter in filterValues">
+                <form ng-submit="onPredicateChange()" class="action">
+                    <div layout="row" layout-align="start center">
                         <div flex>
                             <md-input-container>
-                                <label>{{filter.displayName}}</label>
-                                <md-select ng-model="filterObj[filter.field]" ng-change="onPredicateChange()">
-                                    <md-option ng-repeat="val in filter.values" value="{{val.value}}">
-                                        {{val.name}}
-                                    </md-option>
-                                </md-select>
+                                <label>Search</label>
+                                <input ng-model="query.filter">
                             </md-input-container>
                         </div>
-                        <div>
-                            <md-button type="submit" class="md-fab md-mini md-primary" aria-label="Clear" ng-click="clearFilter(filter.field)">
-                                <md-tooltip>
-                                    Clear
-                                </md-tooltip>
-                                <i class="fa fa-times"></i>
-                            </md-button>
-                        </div>
+                        <div ng-click="clearKeyword()"><i class="fa fa-times"></i></div>
                     </div>
-                </md-card-content>
-            </md-card>-->
+                </form>
 
-                    <md-data-table-toolbar>
-                        <h2 class="md-title">{{title}}</h2>
-                        <i class="fa fa-search action"></i>
-                        <i class="fa fa-filter action"></i>
-                    </md-data-table-toolbar>
+                <div layout="row" layout-align="start center" ng-repeat="filter in filterValues" class="action">
+                    <div flex>
+                        <md-input-container>
+                            <label>{{filter.displayName}}</label>
+                            <md-select ng-model="filterObj[filter.field]" ng-change="onPredicateChange()">
+                                <md-option ng-repeat="val in filter.values" value="{{val.value}}">
+                                    {{val.name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                    <div>
+                        <div ng-click="clearFilter(filter.field)"><i class="fa fa-times"></i></div>
+                    </div>
+                </div>
 
-                    <md-data-table-container>
-                        <table md-data-table md-progress="deferred">
-                            <thead md-order="query.order" md-trigger="getdata">
-                            <tr>
-                                <th name="{{column.displayName}}" ng-repeat="column in cols" ng-class="{'show' : !column.show, 'hide' : column.show, 'show-sm' : column.show && column.show.sm, 'show-gt-sm' : column.show && column.show.gtsm, 'show-md' : column.show && column.show.md, 'show-gt-md' : column.show && column.show.gtmd, 'show-lg' : column.show && column.show.lg, 'show-gt-lg' : column.show && column.show.gtlg}"></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr md-auto-select ng-repeat="entity in entities.data" ng-click="onRowClick(entity, $index)" class="selectable">
-                                <td ng-repeat="column in cols" ng-class="{'show' : !column.show, 'hide' : column.show, 'show-sm' : column.show && column.show.sm, 'show-gt-sm' : column.show && column.show.gtsm, 'show-md' : column.show && column.show.md, 'show-gt-md' : column.show && column.show.gtmd, 'show-lg' : column.show && column.show.lg, 'show-gt-lg' : column.show && column.show.gtlg}">{{entity[column.field]}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </md-data-table-container>
-                    <md-data-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{entities.total}}" md-trigger="getdata" md-row-select="pageSizes"></md-data-table-pagination>
+            </div>
+
+
+            <md-data-table-toolbar>
+                <h2 class="md-title">{{title}}</h2>
+            </md-data-table-toolbar>
+
+            <md-data-table-container>
+                <table md-data-table md-progress="deferred">
+                    <thead md-order="query.order" md-trigger="getdata">
+                    <tr>
+                        <th name="{{column.displayName}}" ng-repeat="column in cols"
+                            ng-class="{'show' : !column.show, 'hide' : column.show, 'show-sm' : column.show && column.show.sm, 'show-gt-sm' : column.show && column.show.gtsm, 'show-md' : column.show && column.show.md, 'show-gt-md' : column.show && column.show.gtmd, 'show-lg' : column.show && column.show.lg, 'show-gt-lg' : column.show && column.show.gtlg}"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr md-auto-select ng-repeat="entity in entities.data" ng-click="onRowClick(entity, $index)"
+                        class="selectable">
+                        <td ng-repeat="column in cols"
+                            ng-class="{'show' : !column.show, 'hide' : column.show, 'show-sm' : column.show && column.show.sm, 'show-gt-sm' : column.show && column.show.gtsm, 'show-md' : column.show && column.show.md, 'show-gt-md' : column.show && column.show.gtmd, 'show-lg' : column.show && column.show.lg, 'show-gt-lg' : column.show && column.show.gtlg}">
+                            {{entity[column.field]}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </md-data-table-container>
+            <md-data-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{entities.total}}"
+                                      md-trigger="getdata" md-row-select="pageSizes"></md-data-table-pagination>
 
         </md-card-content>
     </md-card>
