@@ -55,5 +55,9 @@
           <script src="newjs/angular-material.js"></script>
           <script src="newjs/md-data-table.js"></script>
           <script src="newjs/script.js"></script>
+          <script src="newjs/config.js"></script>
+          <script src="newjs/directives.js"></script>
+          <script src="newjs/services.js"></script>
+          <script src="newjs/controllers.js"></script>
     </body>
 </html>

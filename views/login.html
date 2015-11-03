@@ -1,0 +1,24 @@
+<div ng-controller="LoginCtrl" layout="column">
+    <md-content layout-padding>
+        <md-card>
+            <md-card-content>
+                <form name="loginForm" ng-submit="onSubmit()">
+                    <md-input-container>
+                        <label>Username</label>
+                        <input ng-model="loginForm.username">
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Password</label>
+                        <input type="password" ng-model="loginForm.password">
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Domain</label>
+                        <input ng-model="loginForm.domain">
+                    </md-input-container>
+                    <md-button class="md-raised md-primary" type="submit">Login</md-button>
+                </form>
+            </md-card-content>
+        </md-card>
+    </md-content>
+    <h1>{{loginForm}}</h1>
+</div>
