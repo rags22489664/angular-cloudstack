@@ -1,21 +1,4 @@
-cloudstack.directive("detailview", function() {
-    return {
-        restrict: "E",
-        replace: true,
-        scope: {
-            title: '@'
-        },
-        controller: function($scope, $state, ApiService) {
-
-        },
-        link: function(scope, element, attrs) {
-
-        },
-        templateUrl: 'views/widgets/detailview.html'
-    }
-})
-
-.directive("listview", function() {
+cloudstack.directive("listview", function() {
     return {
         restrict: "E",
         replace: true,
@@ -135,4 +118,4 @@ cloudstack.directive("detailview", function() {
         },
         templateUrl: 'views/widgets/listview.html'
     }
-})
+});

@@ -31,10 +31,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="initial-scale=1">
         <title></title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css">
-        <link rel="stylesheet" href="newcss/angular-material.css">
-        <link rel="stylesheet" href="newcss/md-data-table.css">
-        <link rel="stylesheet" href="newcss/style.css">
+        <link rel="stylesheet" href="newcss/lib/font-awesome.css">
+        <link rel="stylesheet" href="newcss/lib/angular-material.css">
+        <link rel="stylesheet" href="newcss/lib/md-data-table.css">
+        <link rel="stylesheet" href="newcss/cloudstack.css">
     </head>
     <body ng-controller="BaseCtrl" layout="row">
           <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" ng-include="'views/sidenav.html'"></md-sidenav>
@@ -48,16 +48,36 @@
             </md-content>
           </div>
 
-          <script src="newjs/angular.js"></script>
-          <script src="newjs/angular-animate.js"></script>
-          <script src="newjs/angular-aria.js"></script>
-          <script src="newjs/angular-ui-router.js"></script>
-          <script src="newjs/angular-material.js"></script>
-          <script src="newjs/md-data-table.js"></script>
-          <script src="newjs/script.js"></script>
-          <script src="newjs/config.js"></script>
-          <script src="newjs/directives.js"></script>
-          <script src="newjs/services.js"></script>
-          <script src="newjs/controllers.js"></script>
+          <script src="newjs/lib/angular.js"></script>
+          <script src="newjs/lib/angular-animate.js"></script>
+          <script src="newjs/lib/angular-aria.js"></script>
+          <script src="newjs/lib/angular-ui-router.js"></script>
+          <script src="newjs/lib/angular-material.js"></script>
+          <script src="newjs/lib/md-data-table.js"></script>
+
+          <script src="newjs/cloudstack.js"></script>
+
+          <script src="newjs/config/config.js"></script>
+
+          <script src="newjs/directives/listView.js"></script>
+          <script src="newjs/directives/detailView.js"></script>
+
+          <script src="newjs/services/apiService.js"></script>
+          <script src="newjs/services/asyncService.js"></script>
+          <script src="newjs/services/authenticationService.js"></script>
+          <script src="newjs/services/httpService.js"></script>
+          <script src="newjs/services/loadingService.js"></script>
+          <script src="newjs/services/notificationService.js"></script>
+          <script src="newjs/services/utilityService.js"></script>
+
+          <script src="newjs/controllers/baseCtrl.js"></script>
+          <script src="newjs/controllers/headerCtrl.js"></script>
+          <script src="newjs/controllers/loginCtrl.js"></script>
+
+          <script src="newjs/controllers/configuration/configurationCtrl.js"></script>
+
+          <script src="newjs/controllers/virtualMachine/virtualMachineCtrl.js"></script>
+          <script src="newjs/controllers/virtualMachine/virtualMachineDetailCtrl.js"></script>
+
     </body>
 </html>
