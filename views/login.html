@@ -1,23 +1,26 @@
-<div ng-controller="LoginCtrl" layout="column">
-    <md-content layout-padding>
-        <md-card>
-            <md-card-content>
-                <form name="loginForm" ng-submit="onSubmit()">
-                    <md-input-container>
-                        <label>Username</label>
-                        <input ng-model="loginForm.username">
-                    </md-input-container>
-                    <md-input-container>
-                        <label>Password</label>
-                        <input type="password" ng-model="loginForm.password">
-                    </md-input-container>
-                    <md-input-container>
-                        <label>Domain</label>
-                        <input ng-model="loginForm.domain">
-                    </md-input-container>
-                    <md-button class="md-raised md-primary" type="submit">Login</md-button>
-                </form>
-            </md-card-content>
-        </md-card>
-    </md-content>
+<div ng-controller="LoginCtrl" class="mdl-grid" style="padding-top: 50px; max-width: 600px;">
+    <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col">
+        <div class="mdl-card__title" style="justify-content: center;">
+            <h2 class="mdl-card__title-text">Login to Apache CloudStack</h2>
+        </div>
+        <form ng-submit="onSubmit()">
+            <div style="justify-content: center; width: 100%; display: flex;">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="username" ng-model="loginForm.username">
+                    <label class="mdl-textfield__label" for="username">Username</label>
+                </div>
+            </div>
+            <div style="justify-content: center; width: 100%; display: flex;">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="password" id="password" ng-model="loginForm.password">
+                    <label class="mdl-textfield__label" for="password">Password</label>
+                </div>
+            </div>
+            <div style="justify-content: center; width: 100%; display: flex; padding-top: 30px; padding-bottom: 40px;">
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    Login
+                </button>
+            </div>
+        </form>
+    </div>
 </div>

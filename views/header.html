@@ -1,8 +1,15 @@
-<div class="md-toolbar-tools" ng-controller="HeaderCtrl">
-  <md-button class="md-icon-button" aria-label="Menu" ng-click="toggleNav('left')">
-    <i class="fa fa-bars"></i>
-  </md-button>
-  
-  <span flex></span>
-  
-</div>
+<header class="mdl-layout__header">
+  <div class="mdl-layout__header-row">
+    <!-- Title -->
+    <span class="mdl-layout-title">Apache CloudStack</span>
+    <!-- Add spacer, to align navigation to the right -->
+    <div class="mdl-layout-spacer"></div>
+    <!-- Navigation. We hide it in small screens. -->
+    <nav class="mdl-navigation mdl-layout--large-screen-only">
+      <a class="mdl-navigation__link" href="">Link</a>
+      <a class="mdl-navigation__link" href="">Link</a>
+      <a class="mdl-navigation__link" href="">Link</a>
+      <a class="mdl-navigation__link" href="">Link</a>
+    </nav>
+  </div>
+</header>

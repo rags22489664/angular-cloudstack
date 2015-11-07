@@ -1,1 +1,1 @@
-var cloudstack = angular.module("cloudstack", ['ngAnimate', 'ngAria', 'ui.router', 'md.data.table', 'ngMaterial']);
+var cloudstack = angular.module("cloudstack", ['ui.router']);

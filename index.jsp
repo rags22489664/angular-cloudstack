@@ -31,53 +31,70 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="initial-scale=1">
         <title></title>
-        <link rel="stylesheet" href="newcss/lib/font-awesome.css">
-        <link rel="stylesheet" href="newcss/lib/angular-material.css">
-        <link rel="stylesheet" href="newcss/lib/md-data-table.css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="newcss/lib/material.css">
         <link rel="stylesheet" href="newcss/cloudstack.css">
     </head>
-    <body ng-controller="BaseCtrl" layout="row">
-          <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" ng-include="'views/sidenav.html'"></md-sidenav>
+    <body ng-controller="BaseCtrl">
+        <!-- Always shows a header, even in smaller screens. -->
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
+                    <!-- Title -->
+                    <span class="mdl-layout-title">Apache CloudStack</span>
+                    <!-- Add spacer, to align navigation to the right -->
+                    <div class="mdl-layout-spacer"></div>
+                    <!-- Navigation. We hide it in small screens. -->
+                    <nav class="mdl-navigation mdl-layout--large-screen-only">
+                        <a class="mdl-navigation__link" href="">Link</a>
+                        <a class="mdl-navigation__link" href="">Link</a>
+                        <a class="mdl-navigation__link" href="">Link</a>
+                        <a class="mdl-navigation__link" href="">Link</a>
+                    </nav>
+                </div>
+            </header>
+            <div class="mdl-layout__drawer">
+                <span class="mdl-layout-title">Title</span>
+                <nav class="mdl-navigation">
+                    <a class="mdl-navigation__link" href="">Link</a>
+                    <a class="mdl-navigation__link" href="">Link</a>
+                    <a class="mdl-navigation__link" href="">Link</a>
+                    <a class="mdl-navigation__link" href="">Link</a>
+                </nav>
+            </div>
+            <main class="mdl-layout__content" ui-view>
+            </main>
+        </div>
+        <script src="newjs/lib/angular.js"></script>
+        <script src="newjs/lib/angular-ui-router.js"></script>
+        <script src="newjs/lib/material.js"></script>
 
-          <div tabindex="-1" role="main" layout="column" id="main-container" flex>
-            
-            <md-toolbar ng-include="'views/header.html'"></md-toolbar>
-            
-            <md-content md-scroll-y="" class="md-default-theme" flex layout-padding>
-              <div ui-view layout-padding></div>
-            </md-content>
-          </div>
+        <script src="newjs/cloudstack.js"></script>
 
-          <script src="newjs/lib/angular.js"></script>
-          <script src="newjs/lib/angular-animate.js"></script>
-          <script src="newjs/lib/angular-aria.js"></script>
-          <script src="newjs/lib/angular-ui-router.js"></script>
-          <script src="newjs/lib/angular-material.js"></script>
-          <script src="newjs/lib/md-data-table.js"></script>
+        <script src="newjs/config/config.js"></script>
 
-          <script src="newjs/cloudstack.js"></script>
+        <script src="newjs/directives/listView.js"></script>
+        <script src="newjs/directives/detailView.js"></script>
 
-          <script src="newjs/config/config.js"></script>
+        <script src="newjs/services/apiService.js"></script>
+        <script src="newjs/services/asyncService.js"></script>
+        <script src="newjs/services/authenticationService.js"></script>
+        <script src="newjs/services/httpService.js"></script>
+        <script src="newjs/services/loadingService.js"></script>
+        <script src="newjs/services/notificationService.js"></script>
+        <script src="newjs/services/utilityService.js"></script>
 
-          <script src="newjs/directives/listView.js"></script>
-          <script src="newjs/directives/detailView.js"></script>
+        <script src="newjs/services/virtualMachine/virtualMachineService.js"></script>
 
-          <script src="newjs/services/apiService.js"></script>
-          <script src="newjs/services/asyncService.js"></script>
-          <script src="newjs/services/authenticationService.js"></script>
-          <script src="newjs/services/httpService.js"></script>
-          <script src="newjs/services/loadingService.js"></script>
-          <script src="newjs/services/notificationService.js"></script>
-          <script src="newjs/services/utilityService.js"></script>
+        <script src="newjs/controllers/baseCtrl.js"></script>
+        <script src="newjs/controllers/headerCtrl.js"></script>
+        <script src="newjs/controllers/loginCtrl.js"></script>
 
-          <script src="newjs/controllers/baseCtrl.js"></script>
-          <script src="newjs/controllers/headerCtrl.js"></script>
-          <script src="newjs/controllers/loginCtrl.js"></script>
+        <script src="newjs/controllers/configuration/configurationCtrl.js"></script>
 
-          <script src="newjs/controllers/configuration/configurationCtrl.js"></script>
-
-          <script src="newjs/controllers/virtualMachine/virtualMachineCtrl.js"></script>
-          <script src="newjs/controllers/virtualMachine/virtualMachineDetailCtrl.js"></script>
+        <script src="newjs/controllers/virtualMachine/virtualMachineCtrl.js"></script>
+        <script src="newjs/controllers/virtualMachine/virtualMachineDetailCtrl.js"></script>
 
     </body>
 </html>

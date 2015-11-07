@@ -1,3 +1,20 @@
-<div ng-controller="virtualMachinesCtrl">
-  <listview command="getCommand" columns="getColumns" filters="getFilters" responsename="listvirtualmachinesresponse" responseobject="virtualmachine" title="Virtual Machines"></listview>
+<div ng-controller="virtualMachinesCtrl" class="mdl-grid" style="flex-direction: column;">
+    <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col">
+        <table class="mdl-data-table" style="width:101%;">
+            <thead>
+            <tr>
+                <th class="mdl-data-table__cell--non-numeric" ng-repeat="column in columns">
+                    {{column.displayName}}
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="vm in vms.data">
+                <td class="mdl-data-table__cell--non-numeric" ng-repeat="column in columns">
+                    {{vm[column.field]}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

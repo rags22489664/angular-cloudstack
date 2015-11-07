@@ -87,8 +87,6 @@ cloudstack.service('ApiService', function(HttpService, UtilityService, authentic
 
             if (UtilityService.isAFunction(onSuccess)) {
                 onSuccess(data, status, headers, config);
-            } else {
-                console.log(data);
             }
 
         }).error(function(data, status, headers, config) {
@@ -100,8 +98,6 @@ cloudstack.service('ApiService', function(HttpService, UtilityService, authentic
 
             if (UtilityService.isAFunction(onFailure)) {
                 onFailure(data, status, headers, config);
-            } else {
-                console.log(data);
             }
 
         }).finally(function() {

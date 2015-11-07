@@ -1,3 +1,3 @@
-cloudstack.controller("BaseCtrl", ['$scope', function($scope) {
-
+cloudstack.controller("BaseCtrl", ['$scope', 'authentication', function($scope, authentication) {
+     $scope.auth = authentication;
 }]);
